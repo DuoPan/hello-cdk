@@ -5,6 +5,11 @@ export class HelloCdkStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+    const eckey = new cdk.CfnParameter(this, "eckey", {
+      type: "String",
+      description: "The key name of EC2."
+    });
+
     // Retrieve default VPC
     const vpc = new ec2.Vpc(this, 'xing-vpc', {
       subnetConfiguration: [
@@ -56,8 +61,7 @@ export class HelloCdkStack extends cdk.Stack {
       machineImage: ec2.MachineImage.latestAmazonLinux({
         generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2,
       }),
-
-      keyName: 'test1',
+      keyName: eckey.valueAsString,
     });
   }
 }
